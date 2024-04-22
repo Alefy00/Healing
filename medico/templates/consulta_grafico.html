@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Consultas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="consultasChart" width="800" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('consultasChart').getContext('2d');
+        var consultasPorDiaData = {
+            labels: [
+                {% for data, consultas_count in consultas_por_dia %}
+                    "{{ data|date:'Y-m-d' }}",
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'Consultas por Dia',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [
+                    {% for data, consultas_count in consultas_por_dia %}
+                        {{ consultas_count }},
+                    {% endfor %}
+                ]
+            }]
+        };
+        var consultasChart = new Chart(ctx, {
+            type: 'bar',
+            data: consultasPorDiaData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>
